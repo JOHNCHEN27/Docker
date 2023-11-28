@@ -282,7 +282,9 @@ docker pull redis:6.2.7
 
 ------
 
-mkdir /data/redis
+mkdir -p /redis/data
+
+mkdir -p /redis/redis.conf
 
 ------
 
@@ -290,7 +292,11 @@ docker run -p 6379:6379 --name redis -v /data/redis:/data -d redis:6.2.7 redis-s
 
 ------
 
+或者：
 
+```
+docker run -d redis:6.2.7 -p 6379:6379 --name redis -v /redis/data:/data -v /redis/redis.conf:/etc/redis/redis.conf redis-server /etc/redis/redis.conf --appendonly yes --requirepass redis 
+```
 
 说明：
 
@@ -300,9 +306,17 @@ docker run -p 6379:6379 --name redis -v /data/redis:/data -d redis:6.2.7 redis-s
 
 参数`-v /data/redis:/data`表示将宿主机的/data/redis目录挂载到容器的/data目录上，这样可以实现数据持久化。
 
+参数**-v /redis/redis.conf:/etc/redis/redis.conf** 表示将宿主机的/redis/redis.conf文件挂在到容器内/etc/redis/redis.conf文件上
+
+-d redis:6.2.7后台持续运行 指定镜像为redis6.2.7
+
+**redis-server /etc/redis/redis.conf**
+以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录 /etc/redis/redis.conf
+也就是liunx下的/redis/redis.conf
+
 参数`redis-server --appendonly yes`表示开启Redis的数据持久化功能。
 
-
+参数`requirepass redis`表示设置redis密码为redis。
 
 **步骤3：设置Redis开机自启**
 
