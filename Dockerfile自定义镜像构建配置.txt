@@ -1,0 +1,8 @@
+FROM java:8u20                                   --使用的基础镜像，这里是jdk1.8
+MAINTAINER docker_maven docker_maven@email.com   --维持者不用修改
+WORKDIR /ROOT                                    --项目工作目录 一般不修改
+ADD server-1.0-SNAPSHOT.jar server.jar           --项目打包的jar包 以及别名
+CMD ["java", "-version"]                         --cmd查看项目版本 一般不用改
+ENTRYPOINT ["java", "-Dfile.encoding=utf-8","-jar", "server.jar"]      --项目运行的命令 根据实际项目别名更改最后一项
+EXPOSE 8080                                      --暴露的端口 根据实际情况更改
+
